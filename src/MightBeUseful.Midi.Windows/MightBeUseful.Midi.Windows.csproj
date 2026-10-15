@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- The optional installer is explicitly invoked, never a NuGet install/restore hook. -->
+    <NoWarn>$(NoWarn);NU5110;NU5111</NoWarn>
+    <CsWinRTWindowsMetadata>$(NuGetPackageRoot)microsoft.windows.sdk.contracts/10.0.26100.6584/ref/netstandard2.0</CsWinRTWindowsMetadata>
+    <CsWinRTIncludes>Windows.Devices.Midi2</CsWinRTIncludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../Initialize-SharedMidi.ps1" Pack="true" PackagePath="bootstrap/" />
+    <ProjectReference Include="../MightBeUseful.Midi/MightBeUseful.Midi.csproj" />
+    <PackageReference Include="NAudio.Midi" Version="3.0.1" />
+    <PackageReference Include="NAudio.WinMM" Version="3.0.1" />
+    <PackageReference Include="Windows.Devices.Midi2" Version="0.99.88-preview.10" PrivateAssets="all" GeneratePathProperty="true" ExcludeAssets="runtime;native" />
+    <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.6584" ExcludeAssets="all" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

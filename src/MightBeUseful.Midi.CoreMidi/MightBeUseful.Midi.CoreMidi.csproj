@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <None Include="../../licenses/*.txt" Pack="true" PackagePath="licenses/" />
+    <ProjectReference Include="../MightBeUseful.Midi/MightBeUseful.Midi.csproj" />
+    <PackageReference Include="Melanchall.DryWetMidi" Version="8.0.3" ExcludeAssets="build;buildTransitive" GeneratePathProperty="true" />
+    <None Include="$(PkgMelanchall_DryWetMidi)/build/Melanchall_DryWetMidi_Native64.dylib" Pack="true" PackagePath="runtimes/osx-arm64/native/;runtimes/osx-x64/native/" />
+    <None Include="native/osx-arm64/librtmidi.7.dylib" Pack="true" PackagePath="runtimes/osx-arm64/native/" />
+    <None Include="native/osx-arm64/LICENSE" Pack="true" PackagePath="licenses/RtMidi-LICENSE" />
+  </ItemGroup>
+</Project>

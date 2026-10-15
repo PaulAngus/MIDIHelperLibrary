@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/MightBeUseful.Midi/MightBeUseful.Midi.csproj" />
+  <Project Path="src/MightBeUseful.Midi.Windows/MightBeUseful.Midi.Windows.csproj" />
+  <Project Path="src/MightBeUseful.Midi.CoreMidi/MightBeUseful.Midi.CoreMidi.csproj" />
+  <Project Path="tests/MightBeUseful.Midi.Tests/MightBeUseful.Midi.Tests.csproj" />
+</Solution>
