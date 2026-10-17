@@ -8,11 +8,20 @@ public static class WindowsMidiBackend
 {
     private const string CurrentPrefix = "services:";
     private static Lazy<WindowsMidiCapabilities> _current = new(Detect);
+    private static readonly MidiServiceProbe ServiceProbe = new(ProbeModernCore);
     private static readonly object OutputCatalogGate = new();
     private static readonly Dictionary<int, string> CurrentOutputIds = [];
     private static readonly Dictionary<string, int> CurrentOutputTokens = new(StringComparer.Ordinal);
     private static int _nextOutputToken = -1;
     public static WindowsMidiCapabilities Capabilities => _current.Value;
+    /// <summary>The selected native API directory, for diagnostics.</summary>
+    public static string ApiDirectory => WindowsMidiApiLoader.ApiDirectory;
+    /// <summary>Opt into a consumer's app-local API before the first capability probe.</summary>
+    public static void ConfigureAppLocalApiDirectory(string directory)
+    {
+        WindowsMidiApiLoader.ConfigureApplicationDirectory(directory);
+        Interlocked.Exchange(ref _current, new Lazy<WindowsMidiCapabilities>(Detect));
+    }
     public static WindowsMidiCapabilities RefreshCapabilities()
     {
         Interlocked.Exchange(ref _current, new Lazy<WindowsMidiCapabilities>(Detect));
@@ -176,7 +185,7 @@ public static class WindowsMidiBackend
     private static (bool Service, bool Loopback) ProbeModern()
     {
         if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 26200)) { return (false, false); }
-        return Task.Run(ProbeModernCore).WaitAsync(TimeSpan.FromSeconds(3)).GetAwaiter().GetResult();
+        return ServiceProbe.GetResult(TimeSpan.FromSeconds(10));
     }
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static (bool Service, bool Loopback) ProbeModernCore()

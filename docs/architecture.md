@@ -1,5 +1,23 @@
 # Shared MIDI architecture
 
+## Consumer-provided app-local API (0.3.4)
+
+`ConfigureAppLocalApiDirectory` lets a consumer provide its own API before the first probe. The explicit `MBU_MIDI_API_DIRECTORY` diagnostic override still takes precedence, and other consumers retain their shared per-user API installation. `ApiDirectory` exposes the selected location for diagnostics. No transport implementation is copied into consumers.
+
+At the user's request, Preset Sender 0.1.3 restores a single standalone EXE. The app embeds the Preview 10 DLL/resource pair as managed resources, then extracts verified copies into an app-private cache only on Windows 11 25H2 or later. Windows 10 does not extract or load them and uses existing hardware/loopMIDI. This is a deliberate change from the earlier universal-package policy below: the EXE contains the API resources even when copied to legacy Windows. Microsoft's [Preview 10 distribution terms](https://github.com/microsoft/MIDI/releases/tag/inbox-preview-10) distinguish distribution from activation and restrict shipping the API below 25H2; runtime gating alone should not be represented as establishing compliance with those distribution terms.
+
+The app's publisher prepares the pinned build dependency without installing the shared API on the build PC. Native validation uses an EXE-only directory and fresh runtime/MIDI cache, verifies embedded-file hashes, concurrent startup, damaged-cache repair, two legacy receivers, all channels and cleanup. Desktop validation must include a real File Explorer launch with the shared per-user API unavailable.
+
+## Missing optional API diagnosis (0.3.3)
+
+The Windows loader now reports the missing native API's full expected path and the explicit per-user setup command instead of falling through to a misleading WinRT "Class not registered" activation error. On the development PC, Explorer launches reproduced the failure while tool launches passed: the tool's local filesystem view contained the optional API, but Explorer's view did not. Installing the verified DLL/resource pair in the desktop-visible per-user location restored discovery through Refresh Devices in the same failing process. Preset Sender 0.1.2 records backend selection and the three MIDI override values in a local diagnostic file. Future validation must include actual Explorer launches and loaded-module verification.
+
+## Startup recovery (0.3.2)
+
+Windows service discovery retries temporary exceptions and unavailable service/loopback results up to three times, 250 ms apart, within a ten-second caller wait. If the native probe outlives that wait, the next explicit capability refresh reuses it and can observe its late result; it does not launch another native call while one is pending. Completed failures can be retried by `WindowsMidiBackend.RefreshCapabilities()`. OS eligibility, explicit legacy selection and machine compatibility modes still bypass the modern probe. Successful capabilities stay stable until explicitly refreshed, preserving endpoint/catalog consistency.
+
+Preset Sender 0.1.1 refreshes capabilities before enumerating ports on a background worker at startup and on Refresh Devices. It updates the virtual-output choice and existing help text together after discovery. Regression coverage includes transient exceptions, unavailable loopback transport, persistent failure, recovery on refresh, late success after timeout without duplicate native calls, and recovery of the sender's saved virtual-output selection without sending MIDI.
+
 The source repository is [PaulAngus/MIDIHelperLibrary](https://github.com/PaulAngus/MIDIHelperLibrary). Package, assembly and namespace names remain `MightBeUseful.Midi`, `MightBeUseful.Midi.Windows` and `MightBeUseful.Midi.CoreMidi` so consumers keep their existing references. Run the following commands from the MIDIHelperLibrary checkout.
 
 The 0.3.1 migration replaces application-owned MIDI transports in PresetMaestro, Preset Sender and MIDI-Forwarder with three independently built packages. The applications retain their UI, settings, routing choices, TCP framing/authentication and device protocols.
