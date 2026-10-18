@@ -2,6 +2,8 @@
 
 One independently built and versioned MIDI library for PresetMaestro, Preset Sender and MIDI-Forwarder, maintained in [PaulAngus/MIDIHelperLibrary](https://github.com/PaulAngus/MIDIHelperLibrary).
 
+See [building and using release packages](docs/release-packages.md) to download the libraries, build them from source, or add them to a .NET project.
+
 The NuGet packages and .NET namespaces retain the `MightBeUseful.Midi` names. Moving this repository does not change the pinned 0.3.1 packages used by the three applications.
 
 The platform-neutral package owns messages, MIDI 1.0/UMP codecs and port contracts. The Windows package owns both Windows MIDI Services and legacy WinRT/WinMM handling. The CoreMidi package owns the standard DryWetMIDI adapter, the bulk RtMidi adapter and native virtual ports. The platform-neutral Rtp package owns RTP command coding and explicit-initiator, loopback relay and diagnostic responder session lifecycles; CoreMidiNetworkPort only validates the native endpoint and delegates to it. Application routing, device protocols and settings remain in the applications.

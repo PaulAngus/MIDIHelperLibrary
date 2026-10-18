@@ -66,6 +66,8 @@ The platform package carries the correct DryWetMIDI native asset for both Mac ar
 
 ## Building and updating consumers
 
+For package downloads, standalone builds, and installation into a new project, see [building and using release packages](release-packages.md).
+
 On Windows with .NET 10 and PowerShell 7:
 
 ```powershell
