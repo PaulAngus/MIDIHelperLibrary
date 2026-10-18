@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../MightBeUseful.Midi/MightBeUseful.Midi.csproj" />
+    <None Include="*.cs" Pack="true" PackagePath="source/" />
+    <None Include="NOTICE" Pack="true" PackagePath="/" />
+    <None Include="LICENSE" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

@@ -3,4 +3,5 @@
   <Project Path="src/MightBeUseful.Midi.Windows/MightBeUseful.Midi.Windows.csproj" />
   <Project Path="src/MightBeUseful.Midi.CoreMidi/MightBeUseful.Midi.CoreMidi.csproj" />
   <Project Path="tests/MightBeUseful.Midi.Tests/MightBeUseful.Midi.Tests.csproj" />
+  <Project Path="src/MightBeUseful.Midi.Rtp/MightBeUseful.Midi.Rtp.csproj" />
 </Solution>

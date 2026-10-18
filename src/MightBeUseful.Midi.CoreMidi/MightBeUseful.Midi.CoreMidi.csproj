@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <ProjectReference Include="../MightBeUseful.Midi.Rtp/MightBeUseful.Midi.Rtp.csproj" />
     <None Include="../../licenses/*.txt" Pack="true" PackagePath="licenses/" />
     <ProjectReference Include="../MightBeUseful.Midi/MightBeUseful.Midi.csproj" />
     <PackageReference Include="Melanchall.DryWetMidi" Version="8.0.3" ExcludeAssets="build;buildTransitive" GeneratePathProperty="true" />

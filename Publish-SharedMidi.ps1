@@ -15,7 +15,7 @@ foreach ($taskConsumer in $ConsumerRoot) {
     New-Item -ItemType Directory -Path $taskDestination -Force | Out-Null
     Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'licenses') -Filter '*.txt' | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $taskDestination -Force }
     Set-Content -LiteralPath (Join-Path $taskDestination 'version.txt') -Value $taskVersion
-    Set-Content -LiteralPath (Join-Path $taskDestination 'MidiVersion.props') -Value "<Project><PropertyGroup><SharedMidiVersion>$taskVersion</SharedMidiVersion></PropertyGroup></Project>"
+    Set-Content -LiteralPath (Join-Path $taskDestination 'MidiVersion.props') -Value ('<Project><PropertyGroup><SharedMidiVersion>' + $taskVersion + '</SharedMidiVersion><SharedMidiPackageVersion>[$(SharedMidiVersion)]</SharedMidiPackageVersion></PropertyGroup></Project>')
     foreach ($taskPackage in Get-ChildItem -LiteralPath $taskOutput -Filter '*.nupkg') {
         Copy-Item -LiteralPath $taskPackage.FullName -Destination $taskDestination -Force
         $taskCopied = Join-Path $taskDestination $taskPackage.Name

@@ -4,7 +4,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Version>0.3.4</Version>
+    <Version>0.3.6</Version>
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildThisFileDirectory)=/_/shared-midi/</PathMap>
     <Authors>Paul Angus</Authors>
     <Description>Shared MIDI transport and platform implementations for MightBeUseful applications.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>

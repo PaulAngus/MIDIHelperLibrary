@@ -2,7 +2,7 @@ namespace MightBeUseful.Midi;
 
 public static class MidiMessageEncoding
 {
-    // Parameters are range-checked by MidiManager before reaching this boundary.
+    // Callers range-check MIDI channels (1-16) and data values (0-127) before encoding.
     public static int ControlChange(int controller, int value, int channel) =>
         (0xb0 | (channel - 1)) | (controller << 8) | (value << 16);
 
