@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Version>0.3.6</Version>
+    <Version>0.3.7</Version>
     <Deterministic>true</Deterministic>
     <PathMap>$(MSBuildThisFileDirectory)=/_/shared-midi/</PathMap>
     <Authors>Paul Angus</Authors>
@@ -16,4 +16,5 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup><None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" /></ItemGroup>
+  <PropertyGroup Condition="('$(TestLabProfile)' == 'OfflineWindows' or '$(TestLabProfile)' == 'PhysicalWindowsReadOnly')"><DefineConstants>$(DefineConstants);TEST_LAB_OFFLINE_WINDOWS</DefineConstants></PropertyGroup>
 </Project>

@@ -1,0 +1,68 @@
+{
+  "applicationId": "midi-helper-library",
+  "applicationName": "MIDIHelperLibrary",
+  "testProfile": "physical-windows-fm9-read-only",
+  "runner": {
+    "project": "tools/MidiHelperLibrary.Lab/MidiHelperLibrary.Lab.csproj",
+    "destination": "bin/lab",
+    "executable": "bin/lab/MidiHelperLibrary.Lab"
+  },
+  "platforms": {
+    "win": {
+      "properties": [
+        "-p:TestLabProfile=PhysicalWindowsReadOnly"
+      ],
+      "tests": [
+        {
+          "project": "tools/MidiHelperLibrary.LabTests/MidiHelperLibrary.LabTests.csproj",
+          "destination": "bin/tests"
+        },
+        {
+          "project": "tools/MidiHelperLibrary.Fm9Checks/MidiHelperLibrary.Fm9Checks.csproj",
+          "destination": "bin/hardware"
+        }
+      ]
+    }
+  },
+  "offlinePolicy": {
+    "includedTestSources": [
+      "tests/MightBeUseful.Midi.Tests/Midi1CompatiblePortTests.cs",
+      "tests/MightBeUseful.Midi.Tests/Midi1DuplexPortTests.cs",
+      "tests/MightBeUseful.Midi.Tests/Midi1PacketDecoderTests.cs",
+      "tests/MightBeUseful.Midi.Tests/Midi1ShortMessageCodecTests.cs",
+      "tests/MightBeUseful.Midi.Tests/MidiBackendPolicyTests.cs",
+      "tests/MightBeUseful.Midi.Tests/MidiMessageEncodingTests.cs",
+      "tests/MightBeUseful.Midi.Tests/MidiServiceProbeTests.cs",
+      "tests/MightBeUseful.Midi.Tests/UmpMidi1CodecTests.cs"
+    ],
+    "excludedWorkflows": [
+      "RtpPolicyTests: includes real UDP MIDI sessions",
+      "RtpMidiDiagnosticPeerTests: creates UDP MIDI peers",
+      "Native backend and hardware qualification"
+    ],
+    "midiAccess": "none",
+    "hardwareQualification": false,
+    "allScope": "Functional stages only; separate read-only FM9 Native stage in hardware-policy.json."
+  },
+  "hardwarePolicy": {
+    "midiAccess": "four-exact-fm9-read-queries",
+    "includedSources": [
+      "tools/MidiHelperLibrary.Fm9Checks/Program.cs",
+      "tools/MidiHelperLibrary.Fm9Checks/MidiHelperLibrary.Fm9Checks.csproj",
+      "tools/MidiHelperLibrary.Lab/PhysicalProgram.cs",
+      "dependencies/test-lab/Fm9ReadOnly.cs",
+      "dependencies/test-lab/Fm9SharedTransport.cs",
+      "packaging/fm9-read-only.json",
+      "dependencies/test-lab/fm9-query-provenance.json"
+    ],
+    "virtualPortsAllowed": false,
+    "networkMidiAllowed": false,
+    "desktopCoverage": false,
+    "scope": "Production transport interoperability, read-only FM9 identity/firmware/current state; no sending/routing qualification."
+  },
+  "staticFiles": {
+    "packaging/fm9-read-only.json": "fm9-read-only.json",
+    "dependencies/test-lab/fm9-query-provenance.json": "fm9-query-provenance.json"
+  },
+  "agentVersion": "0.2.5"
+}

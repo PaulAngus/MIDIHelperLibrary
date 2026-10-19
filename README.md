@@ -1,5 +1,7 @@
 # MIDIHelperLibrary
 
+Current source release: [0.3.7](docs/releases/0.3.7.md).
+
 One independently built and versioned MIDI library for PresetMaestro, Preset Sender and MIDI-Forwarder, maintained in [PaulAngus/MIDIHelperLibrary](https://github.com/PaulAngus/MIDIHelperLibrary).
 
 See [building and using release packages](docs/release-packages.md) to download the libraries, build them from source, or add them to a .NET project.
@@ -13,3 +15,22 @@ Version 0.3.1 is the initial qualified migration release. See [architecture and 
 Release 0.3.5 extracts shared RTP-MIDI for AI Toolkit for Fractal and MIDI Forwarder. See [RTP policies](docs/rtp-midi.md). This is an offline-tested source release, not new hardware qualification.
 
 Release 0.3.6 moves the loopback diagnostic responder, clocks, feedback and counters into `MightBeUseful.Midi.Rtp`. Diagnostic failure policy remains distinct from the production relay. The toolkit uses the existing shared CC/PC encoders after its own validation. Both affected consumers carry exact 0.3.6 packages.
+
+## Application Test Lab
+
+Portable dashboard integration and build instructions: [Test Lab adapter](docs/test-lab.md).
+
+## Offline Windows Test Lab profile
+
+Build an audited bundle without MIDI access:
+
+```text
+python packaging/build_test_lab.py --rid win-x64 --config packaging/test-lab-offline-windows.json --output artifacts/offline-windows
+```
+
+Every bundle uses fresh build outputs and records its selected test-source hashes in
+`offline-policy.json`. All covers only the profile's offline Functional stages.
+Native and interactive Desktop requests report unavailable; no hardware or MIDI
+routing qualification is implied. No native, virtual, TCP or UDP MIDI connections
+are opened or created. In-memory logic fixtures remain included. The normal
+development profile and its broader transport tests remain separate.

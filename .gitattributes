@@ -3,3 +3,6 @@
 *.props text eol=lf
 *.targets text eol=lf
 *.csproj text eol=lf
+
+# Preserve exact bytes covered by the vendored Test Lab checksum manifest.
+dependencies/test-lab/** -text

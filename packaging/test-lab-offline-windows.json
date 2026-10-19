@@ -1,0 +1,44 @@
+{
+  "applicationId": "midi-helper-library",
+  "applicationName": "MIDIHelperLibrary",
+  "testProfile": "offline-windows-no-midi",
+  "runner": {
+    "project": "tools/MidiHelperLibrary.Lab/MidiHelperLibrary.Lab.csproj",
+    "destination": "bin/lab",
+    "executable": "bin/lab/MidiHelperLibrary.Lab"
+  },
+  "platforms": {
+    "win": {
+      "properties": [
+        "-p:TestLabProfile=OfflineWindows"
+      ],
+      "tests": [
+        {
+          "project": "tools/MidiHelperLibrary.LabTests/MidiHelperLibrary.LabTests.csproj",
+          "destination": "bin/tests"
+        }
+      ]
+    }
+  },
+  "offlinePolicy": {
+    "includedTestSources": [
+      "tests/MightBeUseful.Midi.Tests/Midi1CompatiblePortTests.cs",
+      "tests/MightBeUseful.Midi.Tests/Midi1DuplexPortTests.cs",
+      "tests/MightBeUseful.Midi.Tests/Midi1PacketDecoderTests.cs",
+      "tests/MightBeUseful.Midi.Tests/Midi1ShortMessageCodecTests.cs",
+      "tests/MightBeUseful.Midi.Tests/MidiBackendPolicyTests.cs",
+      "tests/MightBeUseful.Midi.Tests/MidiMessageEncodingTests.cs",
+      "tests/MightBeUseful.Midi.Tests/MidiServiceProbeTests.cs",
+      "tests/MightBeUseful.Midi.Tests/UmpMidi1CodecTests.cs"
+    ],
+    "excludedWorkflows": [
+      "RtpPolicyTests: includes real UDP MIDI sessions",
+      "RtpMidiDiagnosticPeerTests: creates UDP MIDI peers",
+      "Native backend and hardware qualification"
+    ],
+    "midiAccess": "none",
+    "hardwareQualification": false,
+    "allScope": "Only the audited offline Functional stages; Native/Desktop explicitly unavailable."
+  },
+  "agentVersion": "0.2.5"
+}
