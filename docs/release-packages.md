@@ -7,6 +7,27 @@ including the embedded Windows native runtime closure. It has not been published
 as a GitHub release by this audit. The v0.3.6 download instructions below identify
 the older public release, not the corrected application dependency set.
 
+## Windows executable signing
+
+`Sign-WindowsExecutable.ps1` signs the final standalone Windows EXE before the
+consumer copies it to distribution folders. It uses
+an exact certificate thumbprint from `Cert:\CurrentUser\My`, SHA-256 file and
+RFC 3161 timestamp digests, and defaults to `http://time.certum.pl`. SignTool
+verification and a trusted Authenticode signature from that same certificate,
+with a timestamp, are required. A failure stops the publisher; signing happens
+on a temporary sibling copy so a failed attempt does not replace the EXE.
+
+Signing is enabled by `-Sign` or a nonempty `-SigningCertificateThumbprint`
+(default: `MBU_WINDOWS_SIGNING_THUMBPRINT`). `-Sign` with no configured certificate
+fails before building. No configuration produces a labelled unsigned development
+build. The Windows SDK SignTool and Certum card software are build-machine
+requirements only. The private key stays on the card; use its native PIN prompt,
+never a script argument or environment variable. SignTool is discovered on PATH
+or in the Windows 10/11 SDK; override with `-SignToolPath` / `MBU_SIGNTOOL_PATH`.
+Consumer release documentation contains commands and the remaining hardware
+qualification steps. No certificate or token is needed for the isolated helper
+regressions: `./tools/Test-WindowsSigning.ps1`.
+
 ## Download v0.3.6
 
 Open the [v0.3.6 GitHub release](https://github.com/PaulAngus/MIDIHelperLibrary/releases/tag/v0.3.6) and expand **Assets**. There are four `.nupkg` library packages and four matching `.snupkg` symbol packages:

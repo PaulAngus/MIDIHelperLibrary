@@ -15,6 +15,9 @@ foreach ($taskConsumer in $ConsumerRoot) {
     if (-not (Test-Path -LiteralPath $taskConsumer -PathType Container)) { throw "Consumer checkout does not exist: $taskConsumer" }
     New-Item -ItemType Directory -Path $taskDestination -Force | Out-Null
     Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'licenses') -Filter '*.txt' | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $taskDestination -Force }
+    foreach ($taskHelper in @('Sign-WindowsExecutable.ps1')) {
+        Copy-Item -LiteralPath (Join-Path $PSScriptRoot "tools/$taskHelper") -Destination $taskDestination -Force
+    }
     Set-Content -LiteralPath (Join-Path $taskDestination 'version.txt') -Value $taskVersion
     Set-Content -LiteralPath (Join-Path $taskDestination 'MidiVersion.props') -Value ('<Project><PropertyGroup><SharedMidiVersion>' + $taskVersion + '</SharedMidiVersion><SharedMidiPackageVersion>[$(SharedMidiVersion)]</SharedMidiPackageVersion></PropertyGroup></Project>')
     foreach ($taskPackage in Get-ChildItem -LiteralPath $taskOutput -Filter '*.nupkg') {
