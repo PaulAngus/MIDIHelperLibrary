@@ -5,9 +5,10 @@ $ErrorActionPreference = 'Stop'
 & (Join-Path $PSScriptRoot 'Initialize-SharedMidi.ps1') -PrepareBuild
 $taskVersion = ([xml](Get-Content -LiteralPath (Join-Path $PSScriptRoot 'Directory.Build.props') -Raw)).Project.PropertyGroup.Version
 $taskOutput = Join-Path $PSScriptRoot "artifacts/packages/$taskVersion"
-dotnet test (Join-Path $PSScriptRoot 'tests/MightBeUseful.Midi.Tests/MightBeUseful.Midi.Tests.csproj') -c Release
+$taskBuild = Join-Path $PSScriptRoot ('artifacts/build/' + [guid]::NewGuid().ToString('N'))
+dotnet test (Join-Path $PSScriptRoot 'tests/MightBeUseful.Midi.Tests/MightBeUseful.Midi.Tests.csproj') -c Release --artifacts-path (Join-Path $taskBuild 'tests')
 if ($LASTEXITCODE -ne 0) { throw 'Shared MIDI core tests failed.' }
-dotnet pack (Join-Path $PSScriptRoot 'MightBeUseful.Midi.slnx') -c Release -o $taskOutput
+dotnet pack (Join-Path $PSScriptRoot 'MightBeUseful.Midi.slnx') -c Release --artifacts-path (Join-Path $taskBuild 'packages') -o $taskOutput
 if ($LASTEXITCODE -ne 0) { throw 'Shared MIDI packaging failed. Build the Windows provider on Windows.' }
 foreach ($taskConsumer in $ConsumerRoot) {
     $taskDestination = Join-Path $taskConsumer 'dependencies/midi'

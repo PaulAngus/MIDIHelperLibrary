@@ -1,5 +1,20 @@
 # Shared MIDI architecture
 
+## Bundled native runtime (0.3.10)
+
+Current consumers ship the Windows MIDI Services API DLL and PRI plus their
+Microsoft Visual C++ runtime dependencies inside their application deliverables.
+The shared loader extracts hash-verified private copies on eligible Windows and
+loads them by absolute path. No per-user API installation, SDK, .NET installation
+or Visual C++ installer is required. `MBU_MIDI_API_DIRECTORY` remains an explicit
+diagnostic override; ordinary users should leave it unset.
+
+Windows 10 and earlier Windows 11 use existing hardware through OS compatibility
+APIs; Windows 10 application-created virtual MIDI presentation is unsupported.
+Do not infer a loopMIDI requirement from a synthetic loopback test. The following
+versioned sections are historical implementation notes, not current installation
+instructions. In particular, 0.3.3's separate per-user setup is obsolete.
+
 ## Consumer-provided app-local API (0.3.4)
 
 `ConfigureAppLocalApiDirectory` lets a consumer provide its own API before the first probe. The explicit `MBU_MIDI_API_DIRECTORY` diagnostic override still takes precedence, and other consumers retain their shared per-user API installation. `ApiDirectory` exposes the selected location for diagnostics. No transport implementation is copied into consumers.

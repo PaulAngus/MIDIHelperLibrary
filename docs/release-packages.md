@@ -2,6 +2,11 @@
 
 These are developer libraries for .NET 10 applications. Application users should use their application's installer or executable.
 
+The dependency audit's current locally built/pinned package set is **0.3.10**,
+including the embedded Windows native runtime closure. It has not been published
+as a GitHub release by this audit. The v0.3.6 download instructions below identify
+the older public release, not the corrected application dependency set.
+
 ## Download v0.3.6
 
 Open the [v0.3.6 GitHub release](https://github.com/PaulAngus/MIDIHelperLibrary/releases/tag/v0.3.6) and expand **Assets**. There are four `.nupkg` library packages and four matching `.snupkg` symbol packages:

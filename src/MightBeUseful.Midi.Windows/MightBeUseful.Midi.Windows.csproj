@@ -10,6 +10,10 @@
     <CsWinRTIncludes>Windows.Devices.Midi2</CsWinRTIncludes>
   </PropertyGroup>
   <ItemGroup>
+    <!-- Resources stay inside the managed provider, including in single-file apps.
+         They are extracted only on eligible Windows 11, never on Windows 10. -->
+    <EmbeddedResource Include="native/win-x64/*.dll" LogicalName="MightBeUseful.Midi.Native.win-x64.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="native/win-arm64/*.dll" LogicalName="MightBeUseful.Midi.Native.win-arm64.%(Filename)%(Extension)" />
     <None Include="../../Initialize-SharedMidi.ps1" Pack="true" PackagePath="bootstrap/" />
     <ProjectReference Include="../MightBeUseful.Midi/MightBeUseful.Midi.csproj" />
     <PackageReference Include="NAudio.Midi" Version="3.0.1" />
@@ -18,4 +22,13 @@
     <PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.6584" ExcludeAssets="all" PrivateAssets="all" />
   </ItemGroup>
+  <Target Name="EmbedPrivateMidiApi" BeforeTargets="AssignTargetPaths">
+    <Error Condition="!Exists('native/win-x64/msvcp140.dll') or !Exists('native/win-x64/vcruntime140.dll') or !Exists('native/win-x64/vcruntime140_1.dll') or !Exists('native/win-arm64/msvcp140.dll') or !Exists('native/win-arm64/vcruntime140.dll')" Text="The pinned private Visual C++ runtime is incomplete. Restore the provider's native files; do not substitute System32 files." />
+    <ItemGroup>
+      <EmbeddedResource Include="$(PkgWindows_Devices_Midi2)/runtimes/win-x64/native/Windows.Devices.Midi2.dll" LogicalName="MightBeUseful.Midi.Native.win-x64.Windows.Devices.Midi2.dll" />
+      <EmbeddedResource Include="$(PkgWindows_Devices_Midi2)/runtimes/win-x64/native/Windows.Devices.Midi2.pri" LogicalName="MightBeUseful.Midi.Native.win-x64.Windows.Devices.Midi2.pri" />
+      <EmbeddedResource Include="$(PkgWindows_Devices_Midi2)/runtimes/win-arm64/native/Windows.Devices.Midi2.dll" LogicalName="MightBeUseful.Midi.Native.win-arm64.Windows.Devices.Midi2.dll" />
+      <EmbeddedResource Include="$(PkgWindows_Devices_Midi2)/runtimes/win-arm64/native/Windows.Devices.Midi2.pri" LogicalName="MightBeUseful.Midi.Native.win-arm64.Windows.Devices.Midi2.pri" />
+    </ItemGroup>
+  </Target>
 </Project>

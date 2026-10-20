@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace MightBeUseful.Midi.Windows;
 
-/// <summary>Loads a consumer-provided app-local API or the optional shared installation.</summary>
+/// <summary>Loads the bundled API, or an explicitly configured diagnostic override.</summary>
 internal static class WindowsMidiApiLoader
 {
     internal const string ApiVersion = "0.99.88-preview.10";
@@ -11,7 +11,8 @@ internal static class WindowsMidiApiLoader
     private static string? _applicationDirectory;
     internal static string ApiDirectory => Environment.GetEnvironmentVariable("MBU_MIDI_API_DIRECTORY")
         ?? _applicationDirectory
-        ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MightBeUseful", "Midi", ApiVersion, RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant());
+        ?? (OperatingSystem.IsWindowsVersionAtLeast(10, 0, 26200)
+            ? BundledWindowsMidiRuntime.DirectoryPath : string.Empty);
 
     internal static void ConfigureApplicationDirectory(string directory)
     {
@@ -28,14 +29,16 @@ internal static class WindowsMidiApiLoader
         lock (Gate)
         {
             if (_module != 0) { return; }
+            BundledWindowsMidiRuntime.Prepare();
             string directory = ApiDirectory;
             string dll = Path.Combine(directory, "Windows.Devices.Midi2.dll");
             if (!File.Exists(dll))
             {
-                throw new FileNotFoundException($"The optional Windows MIDI API is missing at {dll}. Run Initialize-SharedMidi.ps1 -EnableWindowsServices for this Windows user.", dll);
+                throw new FileNotFoundException($"The Windows MIDI API is missing at {dll}. Restore the complete application or remove an invalid MBU_MIDI_API_DIRECTORY override.", dll);
             }
-            if (!File.Exists(Path.Combine(directory, "Windows.Devices.Midi2.pri"))) { throw new IOException("The optional Windows MIDI API resource file is missing. Run Initialize-SharedMidi.ps1 -EnableWindowsServices again."); }
-            _module = NativeLibrary.Load(dll);
+            if (!File.Exists(Path.Combine(directory, "Windows.Devices.Midi2.pri"))) { throw new IOException("The Windows MIDI API resource file is missing. Restore the complete application or remove an invalid MBU_MIDI_API_DIRECTORY override."); }
+            _module = NativeLibrary.Load(dll, typeof(WindowsMidiApiLoader).Assembly,
+                DllImportSearchPath.UseDllDirectoryForDependencies | DllImportSearchPath.System32);
         }
     }
 }
