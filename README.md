@@ -16,6 +16,14 @@ Release 0.3.5 extracts shared RTP-MIDI for AI Toolkit for Fractal and MIDI Forwa
 
 Release 0.3.6 moves the loopback diagnostic responder, clocks, feedback and counters into `MightBeUseful.Midi.Rtp`. Diagnostic failure policy remains distinct from the production relay. The toolkit uses the existing shared CC/PC encoders after its own validation. Both affected consumers carry exact 0.3.6 packages.
 
+## Local validation and releases
+
+Build, test and package locally on Windows or macOS as appropriate. GitHub Actions
+is disabled. Follow [release-package instructions](docs/release-packages.md) and
+the audited offline profile below. Windows signing-helper regressions run with
+`pwsh ./tools/Test-WindowsSigning.ps1`; these do not use a certificate or MIDI.
+Keep native MIDI and hardware checks separate and explicitly authorized.
+
 ## Application Test Lab
 
 Portable dashboard integration and build instructions: [Test Lab adapter](docs/test-lab.md).
