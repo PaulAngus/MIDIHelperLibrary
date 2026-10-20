@@ -9,8 +9,8 @@ the older public release, not the corrected application dependency set.
 
 ## Windows executable signing
 
-`Sign-WindowsExecutable.ps1` signs the final standalone Windows EXE before the
-consumer copies it to distribution folders. It uses
+`Sign-WindowsExecutable.ps1` signs the final standalone Windows EXE for release.
+It uses
 an exact certificate thumbprint from `Cert:\CurrentUser\My`, SHA-256 file and
 RFC 3161 timestamp digests, and defaults to `http://time.certum.pl`. SignTool
 verification and a trusted Authenticode signature from that same certificate,
