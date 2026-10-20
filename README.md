@@ -16,6 +16,12 @@ Release 0.3.5 extracts shared RTP-MIDI for AI Toolkit for Fractal and MIDI Forwa
 
 Release 0.3.6 moves the loopback diagnostic responder, clocks, feedback and counters into `MightBeUseful.Midi.Rtp`. Diagnostic failure policy remains distinct from the production relay. The toolkit uses the existing shared CC/PC encoders after its own validation. Both affected consumers carry exact 0.3.6 packages.
 
+## License
+
+MIDIHelperLibrary's first-party source is licensed under the
+[Apache License, Version 2.0](LICENSE). Third-party components retain their
+respective licences; see `licenses/` and the component-specific notices.
+
 ## Local validation and releases
 
 Build, test and package locally on Windows or macOS as appropriate. GitHub Actions

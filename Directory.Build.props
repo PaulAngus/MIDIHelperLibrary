@@ -10,11 +10,13 @@
     <Authors>Paul Angus</Authors>
     <Description>Shared MIDI transport and platform implementations for MightBeUseful applications.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/PaulAngus/MIDIHelperLibrary</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
   <ItemGroup><None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" /></ItemGroup>
+  <ItemGroup><None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="licenses/MIDIHelperLibrary/" /></ItemGroup>
   <PropertyGroup Condition="('$(TestLabProfile)' == 'OfflineWindows' or '$(TestLabProfile)' == 'PhysicalWindowsReadOnly')"><DefineConstants>$(DefineConstants);TEST_LAB_OFFLINE_WINDOWS</DefineConstants></PropertyGroup>
 </Project>
