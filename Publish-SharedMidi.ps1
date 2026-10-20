@@ -15,7 +15,7 @@ foreach ($taskConsumer in $ConsumerRoot) {
     if (-not (Test-Path -LiteralPath $taskConsumer -PathType Container)) { throw "Consumer checkout does not exist: $taskConsumer" }
     New-Item -ItemType Directory -Path $taskDestination -Force | Out-Null
     Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'licenses') -Filter '*.txt' | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $taskDestination -Force }
-    foreach ($taskHelper in @('Sign-WindowsExecutable.ps1')) {
+    foreach ($taskHelper in @('Publish-MacApplication.ps1', 'New-WindowsReleaseArchive.ps1', 'Sign-WindowsExecutable.ps1')) {
         Copy-Item -LiteralPath (Join-Path $PSScriptRoot "tools/$taskHelper") -Destination $taskDestination -Force
     }
     Set-Content -LiteralPath (Join-Path $taskDestination 'version.txt') -Value $taskVersion

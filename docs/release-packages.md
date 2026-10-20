@@ -2,15 +2,22 @@
 
 These are developer libraries for .NET 10 applications. Application users should use their application's installer or executable.
 
-The dependency audit's current locally built/pinned package set is **0.3.10**,
-including the embedded Windows native runtime closure. It has not been published
-as a GitHub release by this audit. The v0.3.6 download instructions below identify
-the older public release, not the corrected application dependency set.
+## Application release archives
 
-## Windows executable signing
+The maintained publish helpers live in `tools/`. `Publish-SharedMidi.ps1 -ConsumerRoot`
+copies the helpers into each consumer's `dependencies/midi` folder along with the
+pinned packages. Consumer builds use these local copies, never a sibling checkout.
 
-`Sign-WindowsExecutable.ps1` signs the final standalone Windows EXE for release.
-It uses
+`New-WindowsReleaseArchive.ps1` packages only the published standalone EXE and
+explicit notice files. It reads the version from the EXE and writes
+`<name>-<version>-win-x64.zip` plus a matching `.zip.sha256`.
+`Publish-MacApplication.ps1` creates `<name>-<version>-osx-<architecture>.zip` on
+the signing Mac, preserving bundle permissions and symbolic links with `ditto`.
+Its checksum is generated after signing and any notarization/stapling.
+Windows cross-builds remain signing inputs, not Mac release assets.
+
+`Sign-WindowsExecutable.ps1` signs the final standalone Windows EXE before the
+consumer creates its ZIP/checksum. It uses
 an exact certificate thumbprint from `Cert:\CurrentUser\My`, SHA-256 file and
 RFC 3161 timestamp digests, and defaults to `http://time.certum.pl`. SignTool
 verification and a trusted Authenticode signature from that same certificate,
@@ -27,6 +34,18 @@ or in the Windows 10/11 SDK; override with `-SignToolPath` / `MBU_SIGNTOOL_PATH`
 Consumer release documentation contains commands and the remaining hardware
 qualification steps. No certificate or token is needed for the isolated helper
 regressions: `./tools/Test-WindowsSigning.ps1`.
+
+Applications upload these ZIPs and checksums to GitHub Releases; their
+`docs/github-releases.md` files describe the process. The helper library's own
+`.nupkg` and `.snupkg` files remain NuGet archives and need no extra ZIP wrapper.
+Archive creation requires no signing credentials. Public Mac releases require
+a Developer ID Application identity and notarization profile in the signing
+Mac's keychain; never commit certificates, private keys or credentials.
+
+The dependency audit's current locally built/pinned package set is **0.3.10**,
+including the embedded Windows native runtime closure. It has not been published
+as a GitHub release by this audit. The v0.3.6 download instructions below identify
+the older public release, not the corrected application dependency set.
 
 ## Download v0.3.6
 
